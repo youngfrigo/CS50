@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
 
 char* generate_word(void)
 {
+    int random_line = rand() % 1000;
     FILE* ptr;
     char* word;
     ptr = fopen("5-letter.txt", "r");
@@ -42,8 +43,10 @@ char* generate_word(void)
         printf("File cannot be opened\n");
     }
     
-    word = fgets(word, 5, ptr);
+    word = fgets(word, 6, ptr);
     printf("%s\n", word);
+    printf("%i\n", random_line);
 
+    fclose(ptr);
     return word;
 }
