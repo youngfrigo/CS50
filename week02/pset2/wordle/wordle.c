@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+char* generate_word(void);
+
 int main(int argc, char* argv[])
 {
     if (argc < 2)
@@ -23,6 +25,25 @@ int main(int argc, char* argv[])
     printf("Guess a %i letter word: ", wordsize);
     scanf("%s", guess);
     printf("%s\n", guess);
+
+    generate_word();
     
     return 0;
+}
+
+char* generate_word(void)
+{
+    FILE* ptr;
+    char* word;
+    ptr = fopen("5-letter.txt", "r");
+
+    if (ptr == NULL)
+    {
+        printf("File cannot be opened\n");
+    }
+    
+    word = fgets(word, 5, ptr);
+    printf("%s\n", word);
+
+    return word;
 }
