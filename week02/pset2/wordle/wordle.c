@@ -1,52 +1,94 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
-char* generate_word(void);
+// declare list size
+const int LISTSIZE = 1000;
+
+// function prototype
+void generate_word(int wordsize);
 
 int main(int argc, char* argv[])
 {
+    // check to see if correct CLI arguments
     if (argc < 2)
     {
         printf("Usage: ./wordle wordsize");
         return 0;
     }
 
+    // convert wordsize to int
     int wordsize = atoi (argv[1]);
 
+    // check to see if wordsize between 5 and 8
     if (wordsize < 5 || wordsize > 8)
     {
         printf("Error wordsize must be either 5, 6, 7, 8\n");
         return 2;
     }
 
+    // create variable for guess
     char guess[wordsize];
 
+    // take input and assign to guess
     printf("Guess a %i letter word: ", wordsize);
     scanf("%s", guess);
     printf("%s\n", guess);
 
-    generate_word();
+    generate_word(wordsize);
     
     return 0;
 }
 
-char* generate_word(void)
+// function defintion
+void generate_word(int wordsize)
 {
+    // get random line number
+    srand(time(NULL));
     int random_line = rand() % 1000;
-    FILE* ptr;
-    char* word;
-    ptr = fopen("5-letter.txt", "r");
 
+    // create file pointer and check to see if NULL
+    FILE *ptr;
     if (ptr == NULL)
     {
         printf("File cannot be opened\n");
     }
-    
-    word = fgets(word, 6, ptr);
-    printf("%s\n", word);
-    printf("%i\n", random_line);
 
+    // create string to see what text file to open
+    char str[6];
+
+    // sprintf name of file to str variable
+    sprintf(str, "%i.txt", wordsize);
+
+    // open text file
+    ptr = fopen(str, "r");
+
+    // create word variable
+    char word[wordsize];
+
+    // variable to track line number
+    int n = 0;
+
+    // while loop to check every line
+    while (fgets(word, sizeof(word) + 1, ptr) != NULL)
+    {
+        // increment line number in every iteration of while loop
+        n++;
+
+        // check to see if random line number is the same
+        // print word read from file and line number
+        if (n == random_line)
+        {
+            printf("%s\n", word);
+            printf("%i\n", random_line);
+        }
+
+        // once end of file is reached, break the loop
+        if (fgets(word, sizeof(word) + 1, ptr) == NULL)
+        {
+            break;
+        }
+    }
     fclose(ptr);
-    return word;
 }
