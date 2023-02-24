@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/ali/VSCodeProjects/cs50",
-      "program": "/Users/ali/VSCodeProjects/cs50/build/Debug/outDebug"
+      "cwd": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle",
+      "program": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle/build/Debug/outDebug"
     }
   ]
 }

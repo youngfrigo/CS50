@@ -37,6 +37,8 @@
     "**/.vscode/**"
   ],
   "files.associations": {
-    "stdio.h": "c"
-  }
+    "stdio.h": "c",
+    "sstream": "c"
+  },
+  "C_Cpp_Runner.useAddressSanitizer": false
 }
