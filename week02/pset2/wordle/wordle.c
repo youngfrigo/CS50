@@ -7,7 +7,8 @@
 const int LISTSIZE = 1000;
 
 // function prototype
-void generate_word(int wordsize);
+char* generate_word(int wordsize);
+void word_guess_cmp(char* word, char* guess);
 
 int main(int argc, char* argv[])
 {
@@ -36,13 +37,16 @@ int main(int argc, char* argv[])
     scanf("%s", guess);
     printf("%s\n", guess);
 
-    generate_word(wordsize);
+    char* wordle = malloc(sizeof(char) * wordsize);
+    wordle = generate_word(wordsize);
+
+    printf("%s", wordle);
     
     return 0;
 }
 
 // function defintion
-void generate_word(int wordsize)
+char* generate_word(int wordsize)
 {
     // get random line number
     srand(time(NULL));
@@ -65,7 +69,7 @@ void generate_word(int wordsize)
     ptr = fopen(str, "r");
 
     // create word variable
-    char word[wordsize];
+    char *word = malloc(sizeof(char) * wordsize);
 
     // variable to track line number
     int n = 0;
@@ -80,7 +84,6 @@ void generate_word(int wordsize)
         // print word read from file and line number
         if (n == random_line)
         {
-            printf("%s\n", word);
             printf("%i\n", random_line);
         }
 
@@ -91,4 +94,11 @@ void generate_word(int wordsize)
         }
     }
     fclose(ptr);
+    return word;
+    free (word);
+}
+
+void word_guess_cmp(char* word, char* guess)
+{
+
 }
