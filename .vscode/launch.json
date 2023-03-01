@@ -8,6 +8,19 @@
       "args": [],
       "cwd": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle",
       "program": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle/build/Debug/outDebug"
+    },
+    {
+      "name": "C/C++: clang build and debug active file",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb",
+      "preLaunchTask": "C/C++: clang build active file"
     }
   ]
 }
