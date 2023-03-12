@@ -5,9 +5,9 @@
 #include <stdbool.h>
 
 // ANSI color codes for boxed in letters
-#define GREEN   "\e[30;42;1m"
-#define YELLOW  "\e[30;43;1m"
-#define RED     "\e[30;41;1m"
+#define GREEN   "\e[38;2;255;255;255;1m\e[48;2;106;170;100;1m"
+#define YELLOW  "\e[38;2;255;255;255;1m\e[48;2;201;180;88;1m"
+#define RED     "\e[38;2;255;255;255;1m\e[48;2;220;20;60;1m"
 #define RESET   "\e[0;39m"
 
 // declare list size
@@ -19,17 +19,17 @@ void word_guess_cmp(char* wordle, char* guess, int wordsize);
 
 int main(int argc, char* argv[])
 {
-    // // check to see if correct CLI arguments
+    // // // check to see if correct CLI arguments
     if (argc < 2)
     {
         printf("Usage: ./wordle wordsize\n");
         return 1;
     }
     
-    // // convert wordsize to int
+    // convert wordsize to int
     int wordsize = atoi (argv[1]);
 
-    // int wordsize = 8;
+    // int wordsize = 5;
 
     // check to see if wordsize between 5 and 8
     if (wordsize < 5 || wordsize > 8)
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
     }
 
     // create variable for guess
-    char guess[wordsize];
+    char guess[] = "games";
 
     // create variable for wordle generated word
     char* wordle = malloc(sizeof(char) * wordsize);
@@ -69,7 +69,7 @@ char* generate_word(int wordsize)
     }
 
     // create string to see what text file to open
-    char str[6];
+    char *str = malloc(sizeof(char) * 6);
 
     // sprintf name of file to str variable
     sprintf(str, "%i.txt", wordsize);
@@ -140,18 +140,12 @@ void word_guess_cmp(char* wordle, char* guess, int wordsize)
                 win += status[z];
             }
         }
-
-        // sense check that array is correctly populated after guessing
-        for (int i = 0; i < wordsize; i++)
-        {
-            printf("%i", status[i]);
-        }
-        printf("\n");
         
         // checksum to see if game has been won
         if (win == (2 * wordsize))
         {
             printf(GREEN"Congratulations"RESET"\n");
+            printf("%i\n", guess_count);
             break;
         }
 
@@ -159,47 +153,53 @@ void word_guess_cmp(char* wordle, char* guess, int wordsize)
         printf("Guess a %i letter word: ", wordsize);
         scanf("%s", guess);
 
-        if (strlen(guess) != wordsize)
+        while (strlen(guess) != wordsize)
         {
             printf("Please input word of correct length\n");
-            k--;
+            printf("Guess a %i letter word: ", wordsize);
+            scanf("%s", guess);
         }
-        else
-        {
-            guess_count++;
-            printf("Guess %i: ", guess_count);
-        }
+
+        guess_count++;
+        printf("Guess %i: ", guess_count);
 
         // loop to check if the space is correct
         for (int i = 0; i < wordsize; i++)
         {
             // bool to check if guess[i] is in the correct space
             bool space = false;
-            bool in_word = false;
-            char correct_space;
 
-            if (wordle[i] == guess[i])
+            // bool to check if guess[i] is in the word
+            bool in_word = false;
+
+            // bool to stop saying duplicate letters are in the word if they are not
+            int times_in_word = 0;
+
+            for (int x = 0; x < wordsize; x++)
             {
-                space = true;
+                if (wordle[i] == guess[i])
+                {
+                    space = true;
+                    status[i] = 2;
+                }
             }
 
             for (int j = 0; j < wordsize; j++)
             {
-                if (wordle[j] == guess[i])
+                if (status[j] != 2 && wordle[j] == guess[i])
                 {
                     in_word = true;
+                    status[j] = 1;
                 }
             }
 
-            if (space == true && in_word == true)
+            if (space == true)
             {
                 printf(GREEN"%c"RESET, guess[i]);
-                status[i] = 2;
             }
-            else if (space == false && in_word == true)
+            else if (in_word == true)
             {
                 printf(YELLOW"%c"RESET, guess[i]);
-                status[i] = 1;
             }
             else
             {
@@ -207,5 +207,26 @@ void word_guess_cmp(char* wordle, char* guess, int wordsize)
             }
         }
         printf("\n");
+
+        //populate array and set all numbers to zero
+        for (int i = 0; i < wordsize; i++)
+        {
+            status[i] = 0;
+        }
+
+        // sense check that array is correctly populated after guessing
+        for (int i = 0; i < wordsize; i++)
+        {
+            printf("%i", status[i]);
+        }
+        printf("\n");
+
+        if ((guess_count == (wordsize + 1)) && (win != (2 * wordsize)))
+        {
+            printf("You have run out of guesses. Better luck next time\n");
+            printf("The word was: %s", wordle);
+        }
+    
+    printf("%s", wordle);
     }
 }
