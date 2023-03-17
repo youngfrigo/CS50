@@ -51,6 +51,8 @@ int main(void)
 
     // free allocated memory
     free(message);
+    
+    return 0;
 }
 
 // function definition
