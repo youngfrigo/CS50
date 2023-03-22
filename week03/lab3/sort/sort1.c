@@ -1,25 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-int listsize = 20;
+#define MAX 256
 
 int main(void)
 {
-    int buffer[listsize];
-
-    FILE *fp = fopen("random5000.txt", "r");
+    FILE *fp;
+    fp = fopen("random50000.txt", "r");
     if (fp == NULL)
     {
-        printf("File could not be opened\n");
+        printf("Cannot open file\n");
         return 1;
     }
 
-    fread(buffer, sizeof(int), 1, fp);
-    for (int i = 1; i <= listsize; i++)
-    {
-        printf("%i\n", buffer[i]);
-        fread(buffer, sizeof(int), 1, fp);
-    }
+    int buffer;
 
-    fclose(fp);
+    while (fscanf(fp, "%i", &buffer) == 1)
+    {
+        printf("%i\n", buffer);
+    }
 }
