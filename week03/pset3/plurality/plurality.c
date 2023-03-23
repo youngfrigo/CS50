@@ -4,10 +4,19 @@
 #include <stdlib.h>
 #include <string.h>
 
+// max number of candidates
 #define MAX 9
 
+// for malloc
 int n = 256;
 
+// number of candidates global variables
+int candNum;
+
+// number of voters
+int numVoters;
+
+// define candidate type
 typedef struct candidate
 {
     char *name;
@@ -15,17 +24,16 @@ typedef struct candidate
 }
 candidate;
 
-// ./plurality Alice Bob Charlie
-//      0        1    2     3
+// array of candidates
+candidate candidates[MAX];
+
+// function prototypes
+bool voteCheck(char *name);
+void printWinner(void);
+
 int main(int argc, char *argv[])
 {
-    int numVoters = 0;
-    int candNum = argc - 1;
-    candidate candidates[candNum];
-
-    // prompt user for number of voters
-    printf("Number of voters: ");
-    scanf("%i", &numVoters);
+    candNum = argc - 1;
 
     // ensure that correct amounts of commands are entered
     if (argc < 2)
@@ -53,6 +61,7 @@ int main(int argc, char *argv[])
         }
     }
 
+    // load names into array and set votes to zero
     for (int i = 1; i < argc; i++)
     {
         candidates[i - 1].name = malloc(sizeof(char) * 256);
@@ -60,40 +69,65 @@ int main(int argc, char *argv[])
         candidates[i - 1].votes = 0;
     }
 
-    char *castVote = malloc(sizeof(char) * 256);
+    // prompt user for number of voters
+    printf("Number of voters: ");
+    scanf("%i", &numVoters);
 
-    for (int i = 0; i < numVoters; i++)
+    for (int i = 0; i < numVoters; i ++)
     {
-        int matches = 0;
+        // variable for votest that are cast
+        char *castVote = malloc(sizeof(char) * 256);
+
         printf("Vote: ");
         scanf("%s", castVote);
-        for (int j = 0; j < candNum; j++)
-        {
-            if (strcmp(castVote, candidates[j].name) == 0)
-            {
-                candidates[j].votes++;
-                matches++;
-            }
-        }
-        if (matches == 0)
+        
+        if (!voteCheck(castVote))
         {
             printf("Invalid vote\n");
             i--;
         }
     }
+}
 
-    char *winner = malloc(sizeof(char) * 256);
-    int winVote = 0;
-    for (int i = 0; i < candNum - 1; i++)
+// function definition
+bool voteCheck(char *name)
+{
+    for (int i = 0; i < numVoters; i++)
     {
-        winVote = candidates[i].votes;
-        winner = candidates[i].name;
-        if (candidates[i + 1].votes > candidates[i].votes)
+        for (int j = 0; j < candNum; j++)
         {
-            winVote = candidates[i + 1].votes;
-            winner = candidates[i + 1].name;
+            if (strcmp(name, candidates[j].name) == 0)
+            {
+                candidates[j].votes++;
+                return true;
+            }
         }
     }
-    
-    printf("%s\n", winner);
+    return false;
+}
+
+// function definition
+void printWinner(void)
+{
+    // variables to track of winning votes and winner
+    char *winner = malloc(sizeof(char) * 256);
+    int winVote = 0;
+
+    // establish winning number of votes
+    for (int i = 0; i < candNum - 1; i++)
+    {
+        if (candidates[i].votes > winVote)
+        {
+            winVote = candidates[i].votes;
+        }
+    }
+
+    // print the name of the candidates that have that many votes
+    for (int i  = 0; i < candNum; i++)
+    {
+        if (candidates[i].votes == winVote)
+        {
+            printf("%s\n", candidates[i].name);
+        }
+    }
 }
