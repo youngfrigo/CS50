@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
             candidates[i].votes = 0;
         }
     }
-
+    return 0;
 }
 
 // function definition
