@@ -40,5 +40,6 @@
     "stdio.h": "c",
     "sstream": "c"
   },
-  "C_Cpp_Runner.useAddressSanitizer": false
+  "C_Cpp_Runner.useAddressSanitizer": false,
+  "C_Cpp.default.compilerPath": "C:/Users/aligu/OneDrive/CodeTools/mingw64/bin/clang.exe"
 }
