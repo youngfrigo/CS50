@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle",
-      "program": "/Users/ali/VSCodeProjects/CS50/week02/pset2/wordle/build/Debug/outDebug"
+      "cwd": "/Users/ali/Documents/Code/CS50/week05",
+      "program": "/Users/ali/Documents/Code/CS50/week05/build/Debug/outDebug"
     },
     {
       "name": "C/C++: clang build and debug active file",
